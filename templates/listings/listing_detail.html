@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ listing.title }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-8">
+    <h2 class="text-2xl font-bold mb-4">{{ listing.title }}</h2>
+    <div class="mb-4">
+        <img src="{{ listing.main_image.url }}" alt="{{ listing.title }}" class="rounded-lg shadow-lg">
+    </div>
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold">Details</h3>
+        <p><strong>Price:</strong> ${{ listing.price }}</p>
+        <p><strong>Bedrooms:</strong> {{ listing.num_bedrooms }}</p>
+        <p><strong>Bathrooms:</strong> {{ listing.num_bathrooms }}</p>
+        <p><strong>Square Footage:</strong> {{ listing.square_footage }} sqft</p>
+        <p><strong>Address:</strong> {{ listing.address }}</p>
+    </div>
+    <div>
+        <h3 class="text-lg font-semibold">Listed by</h3>
+        <p>{{ listing.agent.username }}</p> <!-- Displaying the agent's username -->
+        <a href="{% url 'conversation:new' listing.id %}" class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Message Agent
+        </a>
+    </div>
+</div>
+{% endblock %}

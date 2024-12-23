@@ -1,0 +1,83 @@
+/* input.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Custom Components */
+
+    .header-nav {
+        @apply fixed top-0 z-10 flex items-center justify-between w-full h-[5.4rem] px-8 py-4;
+    }
+
+    .nav-item {
+        @apply text-[1.4rem] font-medium mx-2 px-4 py-1 rounded-md transition-colors duration-300 hover:bg-[#181b21] hover:bg-opacity-10;
+    }
+
+    .carousel-section {
+        @apply relative w-full h-screen snap-start;
+    }
+
+    .carousel-image {
+        @apply absolute w-full h-full object-cover;
+    }
+
+    .carousel-text {
+        @apply absolute top-[20%] left-1/2 transform -translate-x-1/2 text-center w-full max-w-[90%] md:max-w-[60%];
+    }
+
+    .carousel-title {
+        @apply text-[4rem] text-[#393c41] font-medium mb-2;
+    }
+
+    .carousel-subtitle {
+        @apply text-[1.6rem] text-[#4c4d50] font-normal;
+    }
+
+    .carousel-buttons {
+        @apply absolute bottom-[15%] left-1/2 transform -translate-x-1/2 flex flex-col md:flex-row gap-4 w-full max-w-[90%] md:max-w-fit items-center justify-center;
+    }
+
+    .button {
+        @apply text-[1.4rem] font-medium uppercase py-2 px-8 rounded-[3.2rem] w-full md:w-[25.6rem] h-[4rem] transition-all duration-300 hover:scale-105;
+    }
+
+    .button-primary {
+        @apply text-white bg-[#171a20] bg-opacity-80 hover:bg-opacity-90;
+    }
+
+    .button-secondary {
+        @apply text-[#393c41] bg-white bg-opacity-60 hover:bg-opacity-70;
+    }
+
+    .scroll-indicator {
+        @apply absolute bottom-[5%] left-1/2 transform -translate-x-1/2 w-8 cursor-pointer;
+    }
+
+    .bounce-icon {
+        @apply w-full h-8 animate-bounce;
+    }
+
+
+/* Bounce Animation */
+@keyframes custom-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@layer utilities {
+    .animate-custom-bounce {
+        animation: custom-bounce 2s infinite;
+    }
+}
+
+/* Smooth Scroll */
+html {
+    @apply scroll-smooth snap-y snap-mandatory;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .main-nav { @apply hidden; }
+    .button { @apply w-full max-w-[90vw]; }
+}

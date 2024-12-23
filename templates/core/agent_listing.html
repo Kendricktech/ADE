@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ agent.get_full_name }}'s Listings{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto my-10">
+    <h1 class="text-4xl font-bold text-center mb-8">{{ agent.get_full_name }}'s Listings</h1>
+
+    {% if listings %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for listing in listings %}
+                <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                    <!-- Display listing details here -->
+                    <h2 class="text-2xl font-semibold">{{ listing.title }}</h2>
+                    <p class="text-gray-600">{{ listing.price }}</p>
+                    <p class="text-gray-500">{{ listing.num_bedrooms }} Bedrooms, {{ listing.num_bathrooms }} Bathrooms</p>
+                    <p class="text-gray-700">{{ listing.address }}</p>
+                    <a href="{% url 'listings:listing_detail' listing.id %}" class="btn btn-primary mt-4">View Details</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-lg">No listings available for this agent.</p>
+    {% endif %}
+</div>
+{% endblock content %}

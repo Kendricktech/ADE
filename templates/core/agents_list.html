@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load static %}  <!-- Load static template tag here -->
+
+{% block title %}Agents{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto my-10">
+    <h1 class="text-4xl font-bold text-center mb-8">Our Agents</h1>
+
+    {% if agents %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for agent in agents %}
+                <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                    <!-- Agent Profile Picture -->
+                    {% if agent.profile_picture %}
+                        <img src="{{ agent.profile_picture.url }}" alt="{{ agent.get_full_name }}" class="w-32 h-32 mx-auto rounded-full">
+                    {% else %}
+                        <img src="{% static 'images/default-profile.png' %}" alt="{{ agent.get_full_name }}" class="w-32 h-32 mx-auto rounded-full">
+                    {% endif %}
+
+                    <!-- Agent Name -->
+                    <h2 class="text-2xl font-semibold mt-4">{{ agent.get_full_name }}</h2>
+
+                    <!-- Agent Email or Contact Info -->
+                    <p class="text-gray-600 mt-2">{{ agent.email }}</p>
+                    <p class="text-gray-600 mt-2">{{ agent.username}}</p>
+                    
+                    <!-- Additional agent info like phone or bio, if available -->
+                    {% if agent.phone %}
+                        <p class="text-gray-500 mt-1">{{ agent.phone }}</p>
+                    {% endif %}
+                    {% if agent.bio %}
+                        <p class="text-gray-700 mt-2">{{ agent.bio }}</p>
+                    {% endif %}
+
+                    <!-- Optional Button to View Agent's Listings (if relevant) -->
+                    <a href="{% url 'agent_listings' agent.id %}" class="btn btn-primary mt-4">View Listings</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-lg">No agents available at the moment.</p>
+    {% endif %}
+</div>
+{% endblock content %}

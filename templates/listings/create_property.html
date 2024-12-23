@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load form_extras %}
+{% block title %}Create Property{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-8">
+    <h2 class="text-2xl font-bold mb-4">List a New Property</h2>
+    <form action="{% url 'listings:create_property' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Render ListingForm fields -->
+        <div class="mb-4">
+            <label for="id_title" class="block text-sm font-medium text-gray-700">Title</label>
+            {{ form.title.errors }}
+            {{ form.title|add_class:"border border-gray-300 rounded-md shadow-sm w-full" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="id_price" class="block text-sm font-medium text-gray-700">Price</label>
+            {{ form.price.errors }}
+            {{ form.price|add_class:"border border-gray-300 rounded-md shadow-sm w-full" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="id_num_bedrooms" class="block text-sm font-medium text-gray-700">Number of Bedrooms</label>
+            {{ form.num_bedrooms.errors }}
+            {{ form.num_bedrooms|add_class:"border border-gray-300 rounded-md shadow-sm w-full" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="id_num_bathrooms" class="block text-sm font-medium text-gray-700">Number of Bathrooms</label>
+            {{ form.num_bathrooms.errors }}
+            {{ form.num_bathrooms|add_class:"border border-gray-300 rounded-md shadow-sm w-full" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="id_square_footage" class="block text-sm font-medium text-gray-700">Square Footage</label>
+            {{ form.square_footage.errors }}
+            {{ form.square_footage|add_class:"border border-gray-300 rounded-md shadow-sm w-full" }}
+        </div>
+
+        <div class="mb-4">
+            <label for="id_address" class="block text-sm font-medium text-gray-700">Address</label>
+            {{ form.address.errors }}
+            {{ form.address|add_class:"border border-gray-300 rounded-md shadow-sm w-full" }}
+        </div>
+
+        <!-- Main Image Upload -->
+        <div class="mb-4">
+            <label for="id_main_image" class="block text-sm font-medium text-gray-700">Main Image</label>
+            {{ form.main_image.errors }}
+            {{ form.main_image|add_class:"border border-gray-300 rounded-md shadow-sm w-full" }}
+        </div>
+
+        <div class="flex justify-center">
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

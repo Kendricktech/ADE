@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="max-w-sm w-full bg-white rounded-lg shadow-lg p-6 mt-10">
+        <h2 class="text-2xl font-bold text-center mb-6">Update Profile</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <!-- Username Field -->
+            <div class="mb-4">
+                <label for="id_username" class="block text-sm font-medium text-gray-700">Username</label>
+                {{ form.username.errors }}
+                <input type="text" name="username" id="id_username" class="block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300" value="{{ form.username.value }}" required>
+            </div>
+            
+            <!-- Is Agent Checkbox Field -->
+            <div class="mb-4">
+                <label for="id_is_agent" class="inline-flex items-center">
+                    <input type="checkbox" name="is_agent" id="id_is_agent" class="form-checkbox h-5 w-5 text-blue-600" {% if form.is_agent.value %}checked{% endif %}>
+                    <span class="ml-2 text-gray-700">Register as an agent</span>
+                </label>
+                {{ form.is_agent.errors }}
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="flex justify-center">
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

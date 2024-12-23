@@ -1,0 +1,178 @@
+{% load static %}
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Your Page Title{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    
+    <!-- Third-party CSS -->
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    {% if debug %}
+        <script src="https://cdn.tailwindcss.com"></script>
+    {% else %}
+        <link rel="stylesheet" href="{% static 'css/output.css' %}?v=1.0">
+    {% endif %}
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=1.0">
+</head>
+<body class="bg-emerald-500 min-h-screen">
+    <!-- Header -->
+    <header>
+        {% include "partials/_navbar.html" %}
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    
+    <!-- ScrollReveal Initialization -->
+    <script>
+        ScrollReveal().reveal('.reveal', {
+            distance: '50px',
+            duration: 1000,
+            easing: 'ease-in-out',
+            origin: 'bottom',
+            reset: false // Prevent repeating animations
+        });
+    </script>
+      <script>
+        const country_field = document.getElementById('country-field');
+        const state_field = document.getElementById('state-field');
+        const lga_field = document.getElementById('lga-field');
+
+        // Trigger when country changes
+        // Trigger when country changes
+country_field.addEventListener('change', function (e) {
+    const country_name = e.target.options[e.target.selectedIndex].textContent;
+    console.log(country_name);
+
+    // Clear previous options in the state and LGA fields
+    state_field.innerHTML = `<option value="" selected>Select State</option>`;
+    lga_field.innerHTML = `<option value="" selected>Select LGA</option>`;
+
+    if (country_name) {
+        fetchStates(country_name);  // Fetch states based on the country name
+    }
+});
+
+// Trigger when state changes
+state_field.addEventListener('change', function (e) {
+    const state_name = e.target.options[e.target.selectedIndex].textContent;
+    console.log(state_name);
+
+    // Clear previous options in the LGA field
+    lga_field.innerHTML = `<option value="" selected>Select LGA</option>`;
+
+    if (state_name) {
+        fetchLGAs(state_name);  // Fetch LGAs based on the state name
+    }
+});
+
+// Function to fetch states based on country_name
+function fetchStates(country_name) {
+    const url = "{% url 'listings:load_states' %}";  // Adjust URL to your Django view for states
+    const data = { country_name: country_name };
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)  // Send country_name to fetch states
+    })
+    .then(response => response.json())
+    .then(states => {
+        if (states.length > 0) {
+            states.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state.name;  // Use state name instead of id
+                option.textContent = state.name;
+                state_field.appendChild(option);
+            });
+        }
+    })
+    .catch(error => console.error('Error fetching states:', error));
+}
+
+// Function to fetch LGAs based on selected state_name
+function fetchLGAs(state_name) {
+    console.log("State name sent to fetch LGAs:", state_name); // Debug log
+    const url = "{% url 'listings:load_lgas' %}"; // Adjust URL to your Django view for LGAs
+    const data = { state_name: state_name };
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)  // Send state_name to fetch LGAs
+    })
+    .then(response => response.json())
+    .then(lgas => {
+        // Debug log for the response
+        console.log("LGAs received:", lgas);
+
+        // Clear previous LGA options
+        lga_field.innerHTML = `<option value="" selected>Select LGA</option>`;
+        
+        if (lgas.length > 0) {
+            lgas.forEach(lga => {
+                const option = document.createElement('option');
+                option.value = lga.name;  // Use LGA name instead of id
+                option.textContent = lga.name;
+                lga_field.appendChild(option);  // Add each LGA as an option
+            });
+        } else {
+            const option = document.createElement('option');
+            option.textContent = "No LGAs found";
+            lga_field.appendChild(option); // Display message if no LGAs are found
+        }
+    })
+    .catch(error => console.error('Error fetching LGAs:', error)); // Handle fetch errors
+}
+
+    <!-- Location Selector Scripts -->
+
+
+
+// CSRF Token Helper (to ensure you send the correct CSRF token with POST requests)
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+   </script>
+</body>
+</html>

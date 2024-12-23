@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Conversation{% endblock %}
+
+{% block content %}
+<h1 class="mb-6 text-3xl">Conversation</h1>
+
+<!-- Listing Details Section -->
+<div class="mb-6 p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-semibold">{{ conversation.listing.title }}</h2>
+    <p class="text-lg text-gray-700">Agent: <strong>{{ conversation.listing.agent.username }}</strong></p>
+    <p class="text-lg text-gray-700">Price: ${{ conversation.listing.price }}</p>
+    <p class="text-lg text-gray-700">Description: {{ conversation.listing.description }}</p>
+</div>
+
+<!-- Messages Section -->
+<div class="space-y-6">
+    {% for message in conversation.messages.all %}
+        <div class="p-6 flex {% if message.agent == request.user %}bg-blue-100{% else %}bg-gray-100{% endif %} rounded-xl">
+            <div>
+                <p class="mb-4">
+                    <strong>{{ message.agent.username }}</strong> @ {{ message.created_at }}
+                </p>
+                <p>{{ message.content }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Message Form -->
+<form method="post" action="." class="mt-6">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">
+        Send
+    </button>
+</form>
+{% endblock %}

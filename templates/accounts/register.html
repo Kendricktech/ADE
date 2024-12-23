@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="max-w-sm w-full bg-white rounded-lg shadow-lg p-6 mt-10"> <!-- Added margin-top -->
+        <h2 class="text-2xl font-bold text-center mb-6">Register</h2>
+        <form action="{% url 'accounts:register' %}" method="post">
+            {% csrf_token %}
+            
+            <!-- Username Field -->
+            <div class="mb-4">
+                <label for="id_username" class="block text-sm font-medium text-gray-700">Username</label>
+                {{ form.username.errors }}
+                <input type="text" name="username" id="id_username" class="block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+            </div>
+            
+            <!-- Password Field -->
+            <div class="mb-4">
+                <label for="id_password1" class="block text-sm font-medium text-gray-700">Password</label>
+                {{ form.password1.errors }}
+                <input type="password" name="password1" id="id_password1" class="block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+            </div>
+            
+            <!-- Confirm Password Field -->
+            <div class="mb-4">
+                <label for="id_password2" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                {{ form.password2.errors }}
+                <input type="password" name="password2" id="id_password2" class="block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300" required>
+            </div>
+
+            <!-- is_agent Checkbox Field -->
+            <div class="mb-4">
+                <label for="id_is_agent" class="inline-flex items-center">
+                    <input type="checkbox" name="is_agent" id="id_is_agent" class="form-checkbox h-5 w-5 text-blue-600">
+                    <span class="ml-2 text-gray-700">Register as an agent</span>
+                </label>
+                {{ form.is_agent.errors }}
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="flex justify-center">
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
