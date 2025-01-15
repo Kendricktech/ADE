@@ -3,38 +3,58 @@
 {% block title %}Conversation{% endblock %}
 
 {% block content %}
-<h1 class="mb-6 text-3xl">Conversation</h1>
+<div class="container px-4 mx-auto my-10">
+    <h1 class="mb-8 text-3xl font-bold text-center text-gray-800">Conversation</h1>
 
-<!-- Listing Details Section -->
-<div class="mb-6 p-6 bg-white shadow-md rounded-lg">
-    <h2 class="text-2xl font-semibold">{{ conversation.listing.title }}</h2>
-    <p class="text-lg text-gray-700">Agent: <strong>{{ conversation.listing.agent.username }}</strong></p>
-    <p class="text-lg text-gray-700">Price: ${{ conversation.listing.price }}</p>
-    <p class="text-lg text-gray-700">Description: {{ conversation.listing.description }}</p>
-</div>
+    <!-- Listing Details Section -->
+    <div class="p-6 mb-6 bg-white rounded-lg shadow-md">
+        <h2 class="mb-2 text-2xl font-semibold text-gray-800">{{ conversation.listing.title }}</h2>
+        <p class="mb-1 text-lg text-gray-700">
+            <span class="font-bold">Agent:</span> {{ conversation.listing.agent.username }}
+        </p>
+        <p class="mb-1 text-lg text-gray-700">
+            <span class="font-bold">Price:</span> ${{ conversation.listing.price }}
+        </p>
+        <p class="text-lg text-gray-700">
+            <span class="font-bold">Description:</span> {{ conversation.listing.description }}
+        </p>
+    </div>
 
-<!-- Messages Section -->
-<div class="space-y-6">
-    {% for message in conversation.messages.all %}
-        <div class="p-6 flex {% if message.agent == request.user %}bg-blue-100{% else %}bg-gray-100{% endif %} rounded-xl">
+    <!-- Messages Section -->
+    <div class="space-y-6">
+        {% for message in conversation.messages.all %}
+        <div class="p-6 flex items-start space-x-4 
+                    {% if message.agent == request.user %}bg-blue-100{% else %}bg-gray-100{% endif %} 
+                    rounded-xl">
+            <!-- Profile Picture Placeholder -->
+            <div class="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-full">
+                <img src="{{ message.agent.profile_picture.url }}" 
+                     alt="{{ message.agent.username }}" 
+                     class="object-cover w-full h-full">
+            </div>
+
+            <!-- Message Content -->
             <div>
-                <p class="mb-4">
-                    <strong>{{ message.agent.username }}</strong> @ {{ message.created_at }}
+                <p class="mb-2 text-sm text-gray-500">
+                    <strong class="text-gray-800">{{ message.agent.username }}</strong>
+                    <span>@ {{ message.created_at }}</span>
                 </p>
-                <p>{{ message.content }}</p>
+                <p class="text-gray-700">{{ message.content }}</p>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+
+    <!-- Message Form -->
+    <form method="post" action="." class="mt-6">
+        {% csrf_token %}
+        <div class="mb-4">
+            {{ form.content.label_tag }}
+            {{ form.content }}
+        </div>
+        <button type="submit" class="px-6 py-3 text-lg font-medium text-white bg-teal-500 rounded-lg shadow-md hover:bg-teal-600">
+            Send
+        </button>
+    </form>
 </div>
-
-<!-- Message Form -->
-<form method="post" action="." class="mt-6">
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">
-        Send
-    </button>
-</form>
 {% endblock %}

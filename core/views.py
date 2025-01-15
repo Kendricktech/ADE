@@ -2,23 +2,18 @@ from django.shortcuts import render, get_object_or_404
 from listings.models import Listing
 from conversation.models import ConversationMessage
 from accounts.models import CustomUser
+from services.models import Booking
+from listings.models import Listing
+from django.views.generic import TemplateView
 
 def index(request):
     # Get the most recent 5 listings
     listings = Listing.objects.all().order_by('-created_at')[:5]
 
-    # Count unread messages for the logged-in user
-    unread_count = (
-        ConversationMessage.objects.filter(
-            conversation__members=request.user,
-            read=False
-        ).count()
-        if request.user.is_authenticated else 0
-    )
+  
 
     context = {
         'listings': listings,
-        'unread_count': unread_count,
     }
 
     return render(request, 'core/index.html', context=context)
@@ -50,3 +45,15 @@ def agents_listing(request, id):
     }
 
     return render(request, 'core/agent_listing.html', context=context)
+
+
+class DashBoardView(TemplateView):
+    template_name='core/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["bookings"] = Booking.objects.filter(customer=self.request.user)
+        context["listings"] = Listing.objects.filter(taker=self.request.user)
+
+        return context
+    

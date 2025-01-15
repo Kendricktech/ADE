@@ -1,11 +1,10 @@
 from django.urls import path
-
 from . import views
 
 app_name = 'conversation'
 
 urlpatterns = [
-    path('', views.inbox, name='inbox'),
-    path('<int:pk>/', views.detail, name='detail'),
-    path('new/<int:listing_id>/', views.new_conversation, name='new'),
+    path('', views.InboxView.as_view(), name='inbox'),
+    path('<int:pk>/', views.ConversationDetailView.as_view(), name='detail'),
+    path('new/<str:item_type>/<int:id>/', views.NewConversationView.as_view(), name='new'),  # Updated URL
 ]

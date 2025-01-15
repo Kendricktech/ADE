@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% load static %}  <!-- Load static template tag here -->
+
+{% block title %}Workers{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto my-10">
+    <h1 class="mb-8 text-4xl font-bold text-center">Available Workers</h1>
+
+    {% if workers %}
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {% for worker in workers %}
+                <div class="p-6 text-center bg-white rounded-lg shadow-lg">
+                    <!-- Worker Profile Picture -->
+                    {% if worker.profile_picture %}
+                        <img src="{{ worker.profile_picture.url }}" alt="{{ worker.user.get_full_name }}" class="w-32 h-32 mx-auto rounded-full">
+                    {% else %}
+                        <img src="{% static 'images/default-profile.png' %}" alt="{{ worker.user.get_full_name }}" class="w-32 h-32 mx-auto rounded-full">
+                    {% endif %}
+
+                    <!-- Worker Name -->
+                    <h2 class="mt-4 text-2xl font-semibold">{{ worker.user.get_full_name }}</h2>
+
+                    <!-- Worker Email -->
+                    <p class="mt-2 text-gray-600">{{ worker.user.email }}</p>
+
+                    <!-- Worker Rating -->
+                    {% if worker.rating %}
+                        <p class="mt-2 text-yellow-500">⭐ {{ worker.rating }}/5</p>
+                    {% else %}
+                        <p class="mt-2 text-gray-400">No ratings yet</p>
+                    {% endif %}
+
+                    <!-- Worker Services Offered -->
+                    <p class="mt-2 text-gray-500"><strong>Services:</strong> {{ worker.services_offered }}</p>
+
+                    <!-- Worker Hourly Rate -->
+                    <p class="mt-2 font-bold text-green-600">₦{{ worker.hourly_rate }} / hour</p>
+
+                    <!-- Worker Availability -->
+                    {% if worker.availability %}
+                        <p class="mt-2 text-green-500">Available</p>
+                    {% else %}
+                        <p class="mt-2 text-red-500">Not Available</p>
+                    {% endif %}
+
+                    <!-- Additional Worker Info (Bio) -->
+                    {% if worker.bio %}
+                        <p class="mt-4 text-gray-700">{{ worker.bio }}</p>
+                    {% endif %}
+
+                    <!-- Optional Button to Book the Worker -->
+                    <a href="{% url 'services:booking-create' worker.id %}" class="mt-4 btn btn-primary">Book Now</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-lg text-center">No workers available at the moment.</p>
+    {% endif %}
+</div>
+{% endblock content %}

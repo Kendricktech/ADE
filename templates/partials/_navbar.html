@@ -1,10 +1,10 @@
 {% load static %}
 
-<nav class="bg-gray-800 text-white  px-8 flex items-center justify-between">
+<nav class="flex items-center justify-between px-8 text-white bg-gray-800">
     <!-- Logo Section -->
     <div class="flex items-center">
-        <a href="{% url 'index' %}" class="text-2xl font-bold flex items-center">
-            <img src="{% static 'images/logo.svg' %}" alt="Logo" class="h-8 w-auto">
+        <a href="{% url 'index' %}" class="flex items-center text-2xl font-bold">
+            <img src="{% static 'images/logo.svg' %}" alt="Logo" class="w-auto h-8">
         </a>
     </div>
 
@@ -14,12 +14,12 @@
     </button>
 
     <!-- Desktop Navigation Links and Auth Buttons -->
-    <div class="hidden md:flex space-x-6 items-center w-full justify-between">
+    <div class="items-center justify-between hidden w-full space-x-6 md:flex">
         <ul class="flex space-x-6 text-lg">
             <li><a href="{% url 'index' %}" class="hover:text-gray-300">Home</a></li>
             <li><a href="#about" class="hover:text-gray-300">About</a></li>
-            <li><a href="{% url "services" %}" class="hover:text-gray-300">Services</a></li>
-            <li><a href="{% url "agents" %}" class="hover:text-gray-300">Contact</a></li>
+            <li><a href="{% url 'services:index' %}" class="hover:text-gray-300">Services</a></li>
+            <li><a href="{% url 'services:agents' %}" class="hover:text-gray-300">Contact</a></li>
         </ul>
 
         <div class="flex items-center space-x-4">
@@ -30,7 +30,7 @@
                         {% if user.new_messages_count > 0 %}{{ user.new_messages_count }}{% else %}0{% endif %}
                     </span>
                 </a>
-                <a href="{% url 'index' %}" class="text-lg font-medium hover:text-gray-300">
+                <a href="{% url 'dashboard' %}" class="text-lg font-medium hover:text-gray-300">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
                 <a href="{% url 'accounts:profile' %}" class="text-lg font-medium hover:text-gray-300">
@@ -39,15 +39,19 @@
                 <a href="{% url 'accounts:logout' %}" class="text-lg font-medium hover:text-gray-300">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
-                {% if not user.is_agent %}
-                    <a href="{% url 'accounts:logout' %}" class="px-4 py-2 text-lg font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 flex items-center">
-                        <i class="fas fa-plus-circle mr-2"></i> Be an Agent
-                    </a>
-                {% else %}
-                    <a href="{% url 'listings:create_property' %}" class="px-4 py-2 text-lg font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 flex items-center">
-                        <i class="fas fa-plus-circle mr-2"></i> List a Property
-                    </a>
-                {% endif %}
+                {% if not user.is_agent and not user.is_worker %}
+                <a href="{% url 'services:work_with_us' %}" class="flex items-center px-4 py-2 text-lg font-medium text-white bg-green-500 rounded-lg hover:bg-green-600">
+                    <i class="mr-2 fas fa-plus-circle"></i> Work with Us
+                </a>
+            {% elif user.is_agent %}
+                <a href="{% url 'services:agent-dashboard' %}" class="flex items-center px-4 py-2 text-lg font-medium text-white bg-green-500 rounded-lg hover:bg-green-600">
+                    <i class="mr-2 fas fa-plus-circle"></i> Agent Dashboard
+                </a>
+            {% elif user.is_worker %}
+                <a href="{% url 'services:worker-dashboard' %}" class="flex items-center px-4 py-2 text-lg font-medium text-white bg-green-500 rounded-lg hover:bg-green-600">
+                    <i class="mr-2 fas fa-plus-circle"></i> Workers Dashboard
+                </a>
+            {% endif %}
             {% else %}
                 <a href="{% url 'accounts:login' %}" class="text-lg font-medium hover:text-gray-300">Sign In</a>
                 <a href="{% url 'accounts:register' %}" class="px-4 py-2 text-lg font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600">Register</a>
@@ -57,16 +61,16 @@
 </nav>
 
 <!-- Mobile Dropdown Menu -->
-<div id="mobile-menu" class="hidden md:hidden bg-gray-800 text-white px-8 py-4">
+<div id="mobile-menu" class="hidden px-8 py-4 text-white bg-gray-800 md:hidden">
     <ul class="flex flex-col space-y-4">
         <li><a href="{% url 'index' %}" class="hover:text-gray-300">Home</a></li>
         <li><a href="#about" class="hover:text-gray-300">About</a></li>
-        <li><a href="{% url "services" %}" class="hover:text-gray-300">Services</a></li>
-        <li><a href="{% url "agents" %}" class="hover:text-gray-300">Contact</a></li>
+        <li><a href="{% url 'services:index' %}" class="hover:text-gray-300">Services</a></li>
+        <li><a href="{% url 'services:agents' %}" class="hover:text-gray-300">Contact</a></li>
     </ul>
 
     {% if user.is_authenticated %}
-        <div class="flex flex-col space-y-4 mt-4">
+        <div class="flex flex-col mt-4 space-y-4">
             <a href="{% url 'conversation:inbox' %}" class="relative text-lg font-medium hover:text-gray-300">
                 <i class="fas fa-inbox"></i> Inbox
                 <span class="absolute top-0 right-0 w-4 h-4 text-xs text-center text-white bg-red-500 rounded-full">
@@ -83,17 +87,17 @@
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
             {% if not user.is_agent %}
-                <a href="{% url 'accounts:update' %}" class="px-4 py-2 text-lg font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 flex items-center">
-                    <i class="fas fa-plus-circle mr-2"></i> Be an Agent
+                <a href="{% url 'accounts:update' %}" class="flex items-center px-4 py-2 text-lg font-medium text-white bg-green-500 rounded-lg hover:bg-green-600">
+                    <i class="mr-2 fas fa-plus-circle"></i> Be an Agent
                 </a>
             {% else %}
-                <a href="{% url 'listings:create_property' %}" class="px-4 py-2 text-lg font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 flex items-center">
-                    <i class="fas fa-plus-circle mr-2"></i> List a Property
+                <a href="{% url 'listings:create' %}" class="flex items-center px-4 py-2 text-lg font-medium text-white bg-green-500 rounded-lg hover:bg-green-600">
+                    <i class="mr-2 fas fa-plus-circle"></i> List a Property
                 </a>
             {% endif %}
         </div>
     {% else %}
-        <div class="flex flex-col space-y-4 mt-4">
+        <div class="flex flex-col mt-4 space-y-4">
             <a href="{% url 'accounts:login' %}" class="text-lg font-medium hover:text-gray-300">Sign In</a>
             <a href="{% url 'accounts:register' %}" class="px-4 py-2 text-lg font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600">Register</a>
         </div>

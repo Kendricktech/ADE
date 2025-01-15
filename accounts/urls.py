@@ -1,12 +1,45 @@
-from django.contrib import admin
-from django.urls import path,include
-from .views import register,login,custom_logout,update_user,profile_view
+from django.urls import path
+from .views import RegisterView, LoginView, CustomLogoutView, UpdateUserView, ProfileView
+from django.contrib.auth.views import (
+    PasswordResetView, 
+    PasswordResetDoneView, 
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+)
 
-app_name='accounts'
+app_name = 'accounts'
+
 urlpatterns = [
-   path('register/',register,name='register'),
-   path('login/',login,name='login'),
-   path('logout',custom_logout,name='logout'),
-   path('update/',update_user,name='update'),
-       path('profile/', profile_view, name='profile'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
+    path('update/', UpdateUserView.as_view(), name='update'),
+    path('profile/', ProfileView.as_view(), name='profile'),
+    
+    # Password Reset URLs using your custom templates
+    path('password_reset/', 
+         PasswordResetView.as_view(
+             template_name='accounts/password_reset.html',
+             success_url='/accounts/password_reset_done/'
+         ), 
+         name='password_reset'),
+         
+    path('password_reset_done/',
+         PasswordResetDoneView.as_view(
+             template_name='accounts/password_reset_done.html'
+         ),
+         name='password_reset_done'),
+         
+    path('reset/<uidb64>/<token>/',
+         PasswordResetConfirmView.as_view(
+             template_name='accounts/password_reset_confirm.html',
+             success_url='/accounts/reset/done/'
+         ),
+         name='password_reset_confirm'),
+         
+    path('reset/done/',
+         PasswordResetCompleteView.as_view(
+             template_name='accounts/password_reset_complete.html'
+         ),
+         name='password_reset_complete'),
 ]

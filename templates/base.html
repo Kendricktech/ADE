@@ -19,18 +19,11 @@
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet">
+    {% tailwind_css %}
 
-    <!-- Tailwind CSS -->
-    {% if debug %}
-        <script src="https://cdn.tailwindcss.com"></script>
-    {% else %}
-        <link rel="stylesheet" href="{% static 'css/output.css' %}?v=1.0">
-    {% endif %}
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=1.0">
+   
 </head>
-<body class="bg-emerald-500 min-h-screen">
+<body class="min-h-screen bg-emerald-500">
     <!-- Header -->
     <header>
         {% include "partials/_navbar.html" %}

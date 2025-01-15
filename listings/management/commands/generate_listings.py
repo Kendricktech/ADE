@@ -5,6 +5,7 @@ from django.core.files import File
 from listings.models import Listing, SubImage
 from accounts.models import CustomUser
 from Location.models import LGA
+from services.models import Agent
 
 class Command(BaseCommand):
     help = "Generate listings and sub-images from the Houses Dataset"
@@ -24,7 +25,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("No house folders found in the dataset directory."))
             return
 
-        agents = CustomUser.objects.filter(is_agent=True)
+        agents = Agent.objects.all()
         locations = LGA.objects.all()
 
         if not agents.exists():

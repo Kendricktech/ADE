@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import index, services, agents_list, agents_listing
+from .views import index, services, agents_list, agents_listing,DashBoardView
 from django.conf import settings
 from django.conf.urls.static import static
 import accounts.urls as account_urls
 
 urlpatterns = [
-    path('agents/', agents_list, name='agents'),
-    path('services', services, name='services'),
+    path('services', include('services.urls'), name='services'),
     path('admin/', admin.site.urls),
     path('', index, name='index'),
+    path('dashboard/',DashBoardView.as_view(),name='dashboard'),
     path("__reload__/", include("django_browser_reload.urls")),
     path('accounts/', include(account_urls), name='accounts'),
     path('listings/', include('listings.urls')),  # Include listings URLs

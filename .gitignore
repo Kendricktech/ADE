@@ -1,0 +1,31 @@
+# Ignore media directory
+media/
+
+# Ignore Houses-dataset directory
+Houses-dataset/
+
+# Ignore environment directory
+env/
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore SQLite database file
+db.sqlite3
+
+# Ignore Python bytecode files
+*.pyc
+__pycache__/
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore other temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Ignore system files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ listing.title }}{% endblock %}
+
+{% block content %}
+<div class="container px-4 mx-auto mt-8">
+    <!-- Title and Main Image -->
+    <h2 class="mb-6 text-3xl font-bold text-center text-gray-800">{{ listing.title }}</h2>
+    
+    <div class="mb-6 text-center">
+        <img src="{{ listing.main_image.url }}" alt="{{ listing.title }}" class="max-w-full rounded-lg shadow-xl">
+    </div>
+
+    <!-- Listing Details -->
+    <div class="p-6 mb-6 text-white bg-gray-800 rounded-lg shadow-md">
+        <h3 class="mb-2 text-lg font-semibold">Details</h3>
+        <p><strong>Price:</strong> ${{ listing.price }}</p>
+        <p><strong>Bedrooms:</strong> {{ listing.num_bedrooms }}</p>
+        <p><strong>Bathrooms:</strong> {{ listing.num_bathrooms }}</p>
+        <p><strong>Square Footage:</strong> {{ listing.square_footage }} sqft</p>
+        <p><strong>Address:</strong> {{ listing.address }}</p>
+    </div>
+
+    <!-- Agent Info and Contact Button -->
+    <div class="p-6 bg-white rounded-lg shadow-md">
+        <h3 class="mb-4 text-lg font-semibold">Listed by</h3>
+        <p class="text-lg font-medium text-gray-700">{{ listing.agent.user.username }}</p> <!-- Displaying the agent's username -->
+        <a href="{% url 'conversation:new' 'listing' listing.id %}" class="inline-block px-6 py-2 mt-4 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
+            Message Agent
+        </a>
+    </div>
+</div>
+{% endblock %}

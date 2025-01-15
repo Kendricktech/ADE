@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Select Account Type{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <h2 class="mb-8 text-3xl font-bold text-center">Select Account Type</h2>
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+        <!-- Agent Card -->
+        <div class="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
+            <h3 class="mb-4 text-xl font-bold text-center">Agent</h3>
+            <p class="mb-6 text-center text-gray-700">
+                Register as an agent to manage and oversee worker bookings and services.
+            </p>
+            <div class="flex justify-center">
+                <a href="{% url 'services:create_agent' %}" class="px-4 py-2 text-white bg-blue-500 rounded-lg btn hover:bg-blue-600">
+                    Create Agent Account
+                </a>
+            </div>
+        </div>
+
+        <!-- Worker Card -->
+        <div class="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
+            <h3 class="mb-4 text-xl font-bold text-center">Worker</h3>
+            <p class="mb-6 text-center text-gray-700">
+                Register as a worker to offer your services and manage customer bookings.
+            </p>
+            <div class="flex justify-center">
+                <a href="{% url 'services:create_worker' %}" class="px-4 py-2 text-white bg-green-500 rounded-lg btn hover:bg-green-600">
+                    Create Worker Account
+                </a>
+            </div>
+        </div>
+
+        <!-- Customer Card -->
+        <div class="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
+            <h3 class="mb-4 text-xl font-bold text-center">Customer</h3>
+            <p class="mb-6 text-center text-gray-700">
+                Register as a customer to book services and manage your bookings.
+            </p>
+            <div class="flex justify-center">
+                <a href="{% url 'accounts:register' %}" class="px-4 py-2 text-white bg-gray-500 rounded-lg btn hover:bg-gray-600">
+                    Create Customer Account
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

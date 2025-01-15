@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'accounts',
     'Location',
      'conversation',
+     'services',
     # Django apps
     'django.contrib.admin',
         'django.contrib.humanize',
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    'services.middleware.UnconfirmedRedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -154,3 +156,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CSRF_TRUSTED_ORIGINS = [
     'https://b645-2c0f-2a80-c8-1710-b4a7-e4d2-7183-fc87.ngrok-free.app'
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"

@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* styles.css */
+
+/* Common form input styles */
+.form-input {
+    @apply block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300;
+}
+
+/* Common label styles */
+.form-label {
+    @apply block text-sm font-medium text-gray-700;
+}
+
+/* Common button styles */
+.form-button {
+    @apply w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded;
+}
+
+/* Checkbox label styles */
+.form-checkbox-label {
+    @apply inline-flex items-center;
+}
+
+.form-checkbox-input {
+    @apply h-5 w-5 text-blue-600;
+}
+
+/* Container styles for form */
+.form-container {
+    @apply flex items-center justify-center min-h-screen bg-gray-100;
+}
+
+.form-card {
+    @apply max-w-sm w-full bg-white rounded-lg shadow-lg p-6 mt-10;
+}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Unconfirmed Account
+{% endblock title %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <h2 class="mb-6 text-2xl font-bold text-center">Account Not Confirmed</h2>
+        
+        <div class="p-4 mb-4 rounded-lg text-amber-700 bg-amber-100">
+            <p class="mb-4 text-center">Your account is pending confirmation.</p>
+            <p class="text-sm text-center text-amber-600">Please wait while our administrators review your application.</p>
+        </div>
+
+        <!-- Status Information -->
+        <div class="mb-4">
+            <div class="p-4 rounded-lg bg-gray-50">
+                <h3 class="mb-2 font-semibold">Account Status</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-center">
+                        <span class="w-32 text-gray-600">Username:</span>
+                        <span class="font-medium">{{ user.username }}</span>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-32 text-gray-600">Account Type:</span>
+                        <span class="font-medium">
+                            {% if user.is_agent %}Agent{% endif %}
+                            {% if user.is_worker %}Worker{% endif %}
+                        </span>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-32 text-gray-600">Status:</span>
+                        <span class="px-2 py-1 text-sm text-yellow-700 bg-yellow-100 rounded">Pending</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="p-4 mb-6 rounded-lg bg-blue-50">
+            <h3 class="mb-2 font-semibold">Need Help?</h3>
+            <p class="mb-2 text-sm text-gray-600">
+                If you have any questions about your account status, please contact our support team.
+            </p>
+            <a href="#" class="text-sm text-blue-600 hover:text-blue-800">Contact Support</a>
+        </div>
+
+        <!-- Return to Home -->
+        <div class="flex justify-center">
+            <a href="{% url 'index' %}" class="form-button">
+                Return to Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

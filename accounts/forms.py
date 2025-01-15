@@ -4,11 +4,11 @@ from .models import CustomUser
 
 class CustomUserRegistrationForm(UserCreationForm):
     is_agent = forms.BooleanField(required=False, label="Are you an agent?")
+    is_worker = forms.BooleanField(required=False, label="Are you a worker?")
 
     class Meta:
         model = CustomUser
-        fields = ("username", "password1", "password2", "is_agent")
-
+        fields = ("username", "password1", "password2", "is_agent", "is_worker")
 
 class CustomUserUpdateForm(UserChangeForm):  # Use UserChangeForm for updates
     class Meta:

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="container mx-auto mt-10">
+    <h2 class="mb-8 text-3xl font-bold text-center">Available Account Types</h2>
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+        <!-- Agent Info -->
+        <div class="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
+            <h3 class="mb-4 text-xl font-bold text-center">Agent</h3>
+            <p class="text-center text-gray-700">
+                Agents oversee worker bookings and manage service-related tasks. This role is ideal for coordinators.
+            </p>
+        </div>
+
+        <!-- Worker Info -->
+        <div class="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
+            <h3 class="mb-4 text-xl font-bold text-center">Worker</h3>
+            <p class="text-center text-gray-700">
+                Workers offer their services to customers and manage bookings related to their work. 
+            </p>
+        </div>
+
+        <!-- Customer Info -->
+        <div class="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
+            <h3 class="mb-4 text-xl font-bold text-center">Customer</h3>
+            <p class="text-center text-gray-700">
+                Customers can book services, manage bookings, and leave reviews for workers or agents.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<div class="form-container">
+    <div class="form-card">
+        <h2 class="mb-6 text-2xl font-bold text-center">Register</h2>
+        
+        {% if form.non_field_errors %}
+        <div class="p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form action="{% url 'accounts:register' %}" method="post">
+            {% csrf_token %}
+            
+            <!-- Username Field -->
+            <div class="mb-4">
+                <label for="id_username" class="form-label">Username</label>
+                {% if form.username.errors %}
+                <div class="mb-1 text-sm text-red-600">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <input type="text" name="username" id="id_username" class="form-input" required>
+            </div>
+            
+            <!-- Password Field -->
+            <div class="mb-4">
+                <label for="id_password1" class="form-label">Password</label>
+                {% if form.password1.errors %}
+                <div class="mb-1 text-sm text-red-600">
+                    {% for error in form.password1.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <input type="password" name="password1" id="id_password1" class="form-input" required>
+            </div>
+            
+            <!-- Confirm Password Field -->
+            <div class="mb-4">
+                <label for="id_password2" class="form-label">Confirm Password</label>
+                {% if form.password2.errors %}
+                <div class="mb-1 text-sm text-red-600">
+                    {% for error in form.password2.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <input type="password" name="password2" id="id_password2" class="form-input" required>
+            </div>
+
+            <!-- is_agent Checkbox Field -->
+            <div class="mb-4">
+                <label for="id_is_agent" class="form-checkbox-label">
+                    <input type="checkbox" name="is_agent" id="id_is_agent" class="form-checkbox-input">
+                    <span class="ml-2 text-gray-700">Register as an agent</span>
+                </label>
+                {% if form.is_agent.errors %}
+                <div class="mt-1 text-sm text-red-600">
+                    {% for error in form.is_agent.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- is_worker Checkbox Field -->
+            <div class="mb-4">
+                <label for="id_is_worker" class="form-checkbox-label">
+                    <input type="checkbox" name="is_worker" id="id_is_worker" class="form-checkbox-input">
+                    <span class="ml-2 text-gray-700">Register as a worker</span>
+                </label>
+                {% if form.is_worker.errors %}
+                <div class="mt-1 text-sm text-red-600">
+                    {% for error in form.is_worker.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-center">
+                <button type="submit" class="form-button">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
